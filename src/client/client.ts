@@ -56,7 +56,7 @@ function animate() {
   requestAnimationFrame(animate);
   date = Date.now() * 0.001;
   //cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  //cube.rotation.y += 0.01;
   cube2.position.set(
     Math.cos(date) * orbitRadius,
     0,
@@ -69,4 +69,26 @@ function render() {
   renderer.render(scene, camera);
 }
 
+function setupKeyControls(cube: any) {
+  // var cube = scene.getObjectByName("cube");
+  document.onkeydown = function (e) {
+    console.log(e);
+    switch (e.keyCode) {
+      case 37:
+        if (cube != null) cube.rotation.x += 30;
+        break;
+      case 38:
+        if (cube != null) cube.rotation.z -= 30;
+        break;
+      case 39:
+        if (cube != null) cube.rotation.x -= 30;
+        break;
+      case 40:
+        if (cube != null) cube.rotation.z += 30;
+        break;
+    }
+  };
+}
+
+setupKeyControls(cube2);
 animate();
