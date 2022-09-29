@@ -38,6 +38,7 @@ new OrbitControls(camera, renderer.domElement);
 
 const geometry = new THREE.BoxGeometry(100, 100, 100);
 const geometry2 = new THREE.BoxGeometry(50, 50, 50);
+const geometry3 = new THREE.BoxGeometry(20, 20, 20);
 const material = new THREE.MeshBasicMaterial({
   color: 0x00ff00,
   wireframe: true,
@@ -45,23 +46,49 @@ const material = new THREE.MeshBasicMaterial({
 
 const cube = new THREE.Mesh(geometry, material);
 const cube2 = new THREE.Mesh(geometry2, material);
+const asteroid = new THREE.Mesh(geometry3, material);
+const asteroid2 = new THREE.Mesh(geometry3, material);
+
 cube2.position.set(0, 100, -100);
+
 scene.add(cube2);
 scene.add(cube);
+scene.add(asteroid);
+scene.add(asteroid2);
 
 var orbitRadius = 200; // for example
-var date;
+const orbitAsteroids = 210;
+
+
+let date, dateAsteroid, dateAsteroid2;
 
 function animate() {
   requestAnimationFrame(animate);
   date = Date.now() * 0.001;
+  dateAsteroid = Date.now() * 0.002;
+  dateAsteroid2 = (Date.now() + 1000) * 0.002;
   //cube.rotation.x += 0.01;
   //cube.rotation.y += 0.01;
-  cube2.position.set(
-    Math.cos(date) * orbitRadius,
-    0,
-    Math.sin(date) * orbitRadius
+  
+  //orbit movement
+  // cube2.position.set(
+  //   Math.cos(date) * orbitRadius,
+  //   0,
+  //   Math.sin(date) * orbitRadius
+  // );
+
+  asteroid.position.set(
+    Math.cos(dateAsteroid) * orbitAsteroids,
+    5,
+    Math.sin(dateAsteroid) * orbitRadius
   );
+
+  asteroid2.position.set(
+    Math.cos(dateAsteroid2) * orbitAsteroids,
+    5,
+    Math.sin(dateAsteroid2) * orbitRadius
+  );
+  
   render();
 }
 
@@ -75,16 +102,16 @@ function setupKeyControls(cube: any) {
     console.log(e);
     switch (e.keyCode) {
       case 37:
-        if (cube != null) cube.rotation.x += 30;
+        if (cube != null) cube.position.z += 30;
         break;
       case 38:
-        if (cube != null) cube.rotation.z -= 30;
+        if (cube != null) cube.position.y += 30;
         break;
       case 39:
-        if (cube != null) cube.rotation.x -= 30;
+        if (cube != null) cube.position.z -= 30;
         break;
       case 40:
-        if (cube != null) cube.rotation.z += 30;
+        if (cube != null) cube.position.y -= 30;
         break;
     }
   };
