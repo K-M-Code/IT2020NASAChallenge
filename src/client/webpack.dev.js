@@ -11,4 +11,19 @@ module.exports = merge(common, {
     },
     hot: true,
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+     {
+       test: /\.(png|svg|jpg|jpeg|gif|obj)$/i,
+       type: 'asset/resource',
+     },
+     { test: /\.obj$/,
+      loader: 'url-loader',
+  },
+    ]
+  }
 });
