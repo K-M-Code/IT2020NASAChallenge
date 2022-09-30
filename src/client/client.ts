@@ -2,14 +2,16 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
-import Stats from 'three/examples/jsm/libs/stats.module'
-import { GUI } from 'dat.gui'
+import Stats from 'three/examples/jsm/libs/stats.module';
+import { GUI } from 'dat.gui';
 import { ACESFilmicToneMapping, Color, DirectionalLight, Mesh, MeshPhongMaterial, MeshPhysicalMaterial, PCFSoftShadowMap, SphereGeometry, sRGBEncoding, TextureLoader } from "three";
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 
 
 const sunTexture = require("../img/8k_sun.jpg");
 const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
 const ship = require("../img/space_ship.obj");
+const airCraft = new URL("../img/aircraft.glb", import.meta.url);
 
 const scene = new THREE.Scene();
 
@@ -46,12 +48,12 @@ const camera = new THREE.OrthographicCamera(
 );
 camera.position.set(10, 5, 10);
 
-//is window is resized 
+//is window is resized
 window.addEventListener('resize', onWindowResize, false)
 function onWindowResize() {
     camera.updateProjectionMatrix()
     renderer.setSize(window.innerWidth, window.innerHeight)
- 
+
 }
 
 const stats = Stats()
@@ -92,16 +94,31 @@ controls.enableDamping = true;
 
 const geometry = new THREE.BoxGeometry(100, 100, 100);
 const geometry2 = new THREE.BoxGeometry(50, 50, 50);
-const geometry3 = new THREE.BoxGeometry(20, 20, 20);
+const geometry3 = new THREE.BoxGeometry(10, 10, 10);
 const material = new THREE.MeshBasicMaterial({
   color: 0x00ff00,
   wireframe: true,
 });
 
+let model: /*unresolved*/ any;
 const cube = new THREE.Mesh(geometry, material);
 const player = new THREE.Mesh(geometry2, material);
 const asteroid = new THREE.Mesh(geometry3, material);
 const asteroid2 = new THREE.Mesh(geometry3, material);
+
+const assetLoader = new GLTFLoader();
+assetLoader.load(airCraft.href, function(gltf){
+  model = gltf.scene;
+  scene.add(model);
+  model.position.set(200,100,-700);
+  model.scale.set(2,2,2);
+  //rotate object???
+  //model.rotation.x = Math.PI / 4;
+  //model.rotation.y = Math.PI / 8;
+  //model.rotation.z = Math.PI / 2;
+}, undefined, function(error){
+  console.error(error);
+});
 
 const gui = new GUI()
 const playerFolder = gui.addFolder('Player')
@@ -118,6 +135,7 @@ cameraFolder.add(camera.position, "z", -1000, 1000);
 
 player.position.set(0, 100, -100);
 
+
 scene.add(player);
 scene.add(cube);
 scene.add(asteroid);
@@ -131,31 +149,32 @@ let date, dateAsteroid, dateAsteroid2;
 
 function setupKeyControls(cube: any) {
   // var cube = scene.getObjectByName("cube");
+  //changed to model "aircraft movement"
   document.onkeydown = function (e) {
     console.log(e);
     switch (e.keyCode) {
       case 37:
-        if (cube != null) cube.position.z += 30;
+        if (model != null) model.position.z += 3;
         break;
       case 38:
-        if (cube != null) cube.position.y += 30;
+        if (model != null) model.position.y += 3;
         break;
       case 39:
-        if (cube != null) cube.position.z -= 30;
+        if (model != null) model.position.z -= 3;
         break;
       case 40:
-        if (cube != null) cube.position.y -= 30;
+        if (model != null) model.position.y -= 3;
         break;
     }
   };
 }
 
 (async function () {
-  
+
   let textureForSun = {
     map: await new TextureLoader().loadAsync(sunTexture)
   };
- 
+
   const bgTexture = new TextureLoader().load(milkWayTexture);
   scene.background = bgTexture;
 
@@ -190,9 +209,9 @@ function setupKeyControls(cube: any) {
       5,
       Math.sin(dateAsteroid2) * orbitRadius
     );
-    
+
     sphere.rotation.y += 0.01;
-      
+
     stats.update();
   });
 })();
