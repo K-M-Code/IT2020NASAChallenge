@@ -31,8 +31,8 @@ objLoader.load(ship, function(object){
 // scene.add(gridHelper);
 
 //axis helper
-// const axesHelper = new THREE.AxesHelper(1000);
-// scene.add(axesHelper);
+const axesHelper = new THREE.AxesHelper(1000);
+scene.add(axesHelper);
 
 const viewSize = 900;
 const aspectRatio = window.innerWidth / window.innerHeight;
@@ -144,7 +144,7 @@ scene.add(asteroid2);
 
 var orbitRadius = 200; // for example
 const orbitAsteroids = 210;
-
+const orbitAircraft = 400;
 
 let date, dateAsteroid, dateAsteroid2;
 
@@ -197,7 +197,7 @@ function setupKeyControls(cube: any) {
     controls.update();
     date = Date.now() * 0.001;
     dateAsteroid = Date.now() * 0.002;
-    dateAsteroid2 = (Date.now() + 1000) * 0.002;
+    dateAsteroid2 = (Date.now() + 1000) * 0.0002;
 
     asteroid.position.set(
       Math.cos(dateAsteroid) * orbitAsteroids,
@@ -210,6 +210,14 @@ function setupKeyControls(cube: any) {
       5,
       Math.sin(dateAsteroid2) * orbitRadius
     );
+
+    model.position.set(
+      Math.cos(dateAsteroid2) * orbitAircraft,
+      5,
+      Math.sin(dateAsteroid2) * orbitAircraft
+    );
+    
+    model.rotation.y -= 0.0003;
 
     sphere.rotation.y += 0.01;
 
