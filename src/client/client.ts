@@ -12,6 +12,9 @@ const sunTexture = require("../img/8k_sun.jpg");
 const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
 const airCraft = new URL("../img/aircraft.glb", import.meta.url);
 const asteroidModelUrl = new URL("../img/Hyperion_1_1000.glb", import.meta.url);
+const n = 1000;
+const asteroidMax = 12;
+const asteroidMin = 1;
 
 const scene = new THREE.Scene();
 
@@ -43,7 +46,7 @@ camera.position.set(10, 5, 10);
 const fov = 45;
 const aspect = 2;  // the canvas default
 const near = 0.1;
-const far = 1000;
+const far = 10000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
 //is window is resized
@@ -90,20 +93,10 @@ controls.target.set(0,0,0);
 controls.dampingFactor = 0.05;
 controls.enableDamping = true;
 
-const geometry2 = new THREE.BoxGeometry(50, 50, 50);
-const geometry3 = new THREE.BoxGeometry(10, 10, 10);
-const material = new THREE.MeshBasicMaterial({
-  color: 0x00ff00,
-  wireframe: true,
-});
 
 let model: /*unresolved*/ any;
-let asteroids:any = [];
-const asteroid = new THREE.Mesh(geometry3, material);
-const asteroid2 = new THREE.Mesh(geometry3, material);
-
-
-
+//let a:any, a1 : any, a2 : any, a3 : any, a4: any, a5 : any;
+let asteroid : any = [];
 const gui = new GUI()
 
 const cameraFolder = gui.addFolder("Camera");
@@ -111,8 +104,6 @@ cameraFolder.add(camera.position, "x", -1000, 1000);
 cameraFolder.add(camera.position, "y", -1000, 1000);
 cameraFolder.add(camera.position, "z", -1000, 1000);
 
-scene.add(asteroid);
-scene.add(asteroid2);
 
 var orbitRadius = 200; // for example
 const orbitAsteroids = 210;
@@ -174,13 +165,45 @@ function setupKeyControls(cube: any) {
 
   const assetLoader = new GLTFLoader();
   assetLoader.load(asteroidModelUrl.href, function(gltf){
-    asteroids[0] = gltf.scene.children[0];
-    asteroids[0].scale.set(0.05,0.05,0.05);
-    asteroids[0].position.set(0 , 100, orbitAircraft);
-    scene.add(asteroids[0]);
+    /*a = gltf.scene.children[0];
+    a.scale.set(0.05,0.05,0.05);
+    a.position.set(0 , 90, orbitAircraft);
+    a1 = a.clone();
+    a1.position.set(200 , 30, orbitAircraft);
+    a2 = a.clone();
+    a2.position.set(700 , 200, orbitAircraft-50);
+    a3 = a.clone();
+    a3.position.set(1200 , 55, orbitAircraft);
+    a4 = a.clone();
+    a4.position.set(1300 , 25, orbitAircraft);
+    a5 = a.clone();
+    a5.position.set(1400 , 35, orbitAircraft);
+
+    scene.add(a, a1, a2 , a3, a4, a5);
+    a.rotation.x += 1;
+    a1.rotation.x +=1.5;
+    a2.rotation.x +=.5;
+    a3.rotation.x +=1.9;
+    a4.rotation.x +=1.1;
+    a5.rotation.x +=1.2;*/
+    let a =  gltf.scene.children[0];
+    a.scale.set(0.05,0.05,0.05);
+    for( let i = 0; i<n ; i++){
+      asteroid[i] =  a.clone();
+      a.scale.set(randomIntFromInterval(asteroidMin,asteroidMax)/100,randomIntFromInterval(asteroidMin,asteroidMax)/100,randomIntFromInterval(asteroidMin,asteroidMax)/100);
+      asteroid[i].position.set(randomIntFromInterval(50,700) , randomIntFromInterval(-500,500), orbitAircraft -randomIntFromInterval(-1000,1000));
+      asteroid[i].rotation.x += randomIntFromInterval(-1,5);
+      scene.add(asteroid[i]);
+    }
+
   }, undefined, function(error){
     console.error(error);
   })
+
+  
+  function randomIntFromInterval(min : number, max: number) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
 
   assetLoader.load(airCraft.href, function(gltf){
     model = gltf.scene.children[0]; 
@@ -203,18 +226,6 @@ function setupKeyControls(cube: any) {
     date = Date.now() * 0.001;
     dateAsteroid = Date.now() * 0.002;
     dateAsteroid2 = (Date.now() + 1000) * 0.002;
-
-    asteroid.position.set(
-      Math.cos(dateAsteroid) * orbitAsteroids,
-      5,
-      Math.sin(dateAsteroid) * orbitRadius
-    );
-
-    asteroid2.position.set(
-      Math.cos(dateAsteroid2) * orbitAsteroids,
-      5,
-      Math.sin(dateAsteroid2) * orbitRadius
-    );
     
     sphere.rotateY(0.004);
     sphere2.rotateY(0.001);
