@@ -6,18 +6,26 @@ import Stats from 'three/examples/jsm/libs/stats.module';
 import { GUI } from 'dat.gui';
 import { ACESFilmicToneMapping, Color, DirectionalLight, Mesh, MeshPhongMaterial, MeshPhysicalMaterial, PCFSoftShadowMap, SphereGeometry, sRGBEncoding, TextureLoader } from "three";
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
+import {SpaceShip} from './space-ship';
 
 
 const sunTexture = require("../img/8k_sun.jpg");
 const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
-const airCraft = new URL("../img/aircraft.glb", import.meta.url);
 const asteroidModelUrl = new URL("../img/Hyperion_1_1000.glb", import.meta.url);
+const airCraft = new URL("../img/aircraft.glb", import.meta.url);
+
 const n = 1000;
 const asteroidMax = 12;
 const asteroidMin = 1;
 
-const scene = new THREE.Scene();
 
+//GONZALO! Here we init the space ship
+const newSpaseShip = new SpaceShip(airCraft);
+newSpaseShip.init();
+
+
+const scene = new THREE.Scene();
+scene.add(new THREE.AxesHelper(5))
 //grid helper
 // const size = 10000;
 // const divisions = 100;
@@ -48,14 +56,6 @@ const aspect = 2;  // the canvas default
 const near = 0.1;
 const far = 10000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-
-//is window is resized
-window.addEventListener('resize', onWindowResize, false)
-function onWindowResize() {
-    camera.updateProjectionMatrix()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-
-}
 
 const stats = Stats()
 document.body.appendChild(stats.dom)
@@ -104,35 +104,15 @@ cameraFolder.add(camera.position, "x", -1000, 1000);
 cameraFolder.add(camera.position, "y", -1000, 1000);
 cameraFolder.add(camera.position, "z", -1000, 1000);
 
+const spaceShipFolder = gui.addFolder("Ship");
+spaceShipFolder.add(newSpaseShip.getModel().position, "x");
+spaceShipFolder.add(newSpaseShip.getModel().position, "y");
+spaceShipFolder.add(newSpaseShip.getModel().position, "z");
 
-var orbitRadius = 200; // for example
-const orbitAsteroids = 210;
+
+
 const orbitAircraft = 250;
 
-
-let date, dateAsteroid, dateAsteroid2;
-
-function setupKeyControls(cube: any) {
-  // var cube = scene.getObjectByName("cube");
-  //changed to model "aircraft movement"
-  document.onkeydown = function (e) {
-    console.log(e);
-    switch (e.keyCode) {
-      case 37:
-        if (model != null) model.position.z -= 1;
-        break;
-      case 38:
-        if (model != null) model.position.y += 1;
-        break;
-      case 39:
-        if (model != null) model.position.z += 1;
-        break;
-      case 40:
-        if (model != null) model.position.y -= 1;
-        break;
-    }
-  };
-}
 
 (async function () {
 
@@ -205,34 +185,29 @@ function setupKeyControls(cube: any) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
-  assetLoader.load(airCraft.href, function(gltf){
-    model = gltf.scene.children[0]; 
-    sphere.add(model);
-    model.position.set(0 , 25, orbitAircraft);
-    model.scale.set(0.1,0.1,0.1);
-    model.rotateY(-Math.PI/2);
-  }, undefined, function(error){
-    console.error(error);
-  });
+  newSpaseShip.setPosition(0 , 25, orbitAircraft);
+  newSpaseShip.addShipToAnotherObject(sphere);
+
   camera.position.set(-250,40,orbitAircraft);
 
   //All settings before animation loop
-  setupKeyControls(model);
 
   //ANIMATION LOOOOP
   renderer.setAnimationLoop(() => {
+
+    newSpaseShip.keyPressHandler();
+    
     renderer.render(scene, camera);
     controls.update();
-    date = Date.now() * 0.001;
-    dateAsteroid = Date.now() * 0.002;
-    dateAsteroid2 = (Date.now() + 1000) * 0.002;
-    
+
     sphere.rotateY(0.004);
     sphere2.rotateY(0.001);
     sphere.add(camera);
     camera.lookAt(sphere.position.x , sphere.position.y, sphere.position.z);
     camera.rotation.y = -1.7;
     stats.update();
+
+
   });
 })();
 
