@@ -10,21 +10,9 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 
 const sunTexture = require("../img/8k_sun.jpg");
 const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
-const ship = require("../img/space_ship.obj");
 const airCraft = new URL("../img/aircraft.glb", import.meta.url);
 
 const scene = new THREE.Scene();
-
-const euler = new THREE.Euler(Math.PI / 180 * 45, 0, 0)
-
-let objLoader = new THREE.ObjectLoader();
-//objLoader.setPath(assetsPath);
-objLoader.load(ship, function(object){
-  console.log("Inside object Loader");
-  object.position.y -= 100;
-  scene.add(object);
-});
-
 
 //grid helper
 // const size = 10000;
@@ -101,7 +89,6 @@ controls.target.set(0,0,0);
 controls.dampingFactor = 0.05;
 controls.enableDamping = true;
 
-const geometry = new THREE.BoxGeometry(100, 100, 100);
 const geometry2 = new THREE.BoxGeometry(50, 50, 50);
 const geometry3 = new THREE.BoxGeometry(10, 10, 10);
 const material = new THREE.MeshBasicMaterial({
@@ -110,37 +97,24 @@ const material = new THREE.MeshBasicMaterial({
 });
 
 let model: /*unresolved*/ any;
-const cube = new THREE.Mesh(geometry, material);
-const player = new THREE.Mesh(geometry2, material);
 const asteroid = new THREE.Mesh(geometry3, material);
 const asteroid2 = new THREE.Mesh(geometry3, material);
 
 
 
 const gui = new GUI()
-const playerFolder = gui.addFolder('Player')
-const playerPositionFolder = playerFolder.addFolder('Position');
-playerPositionFolder.add(player.position, "x", -1000 , 1000);
-playerPositionFolder.add(player.position, "y", -1000 , 1000);
-playerPositionFolder.add(player.position, "z", -1000, 1000);
 
 const cameraFolder = gui.addFolder("Camera");
 cameraFolder.add(camera.position, "x", -1000, 1000);
 cameraFolder.add(camera.position, "y", -1000, 1000);
 cameraFolder.add(camera.position, "z", -1000, 1000);
 
-
-player.position.set(0, 100, -100);
-
-
-scene.add(player);
-scene.add(cube);
 scene.add(asteroid);
 scene.add(asteroid2);
 
 var orbitRadius = 200; // for example
 const orbitAsteroids = 210;
-const orbitAircraft = 150;
+const orbitAircraft = 250;
 
 
 let date, dateAsteroid, dateAsteroid2;
@@ -152,16 +126,16 @@ function setupKeyControls(cube: any) {
     console.log(e);
     switch (e.keyCode) {
       case 37:
-        if (model != null) model.position.z += 3;
+        if (model != null) model.position.z -= 1;
         break;
       case 38:
-        if (model != null) model.position.y += 3;
+        if (model != null) model.position.y += 1;
         break;
       case 39:
-        if (model != null) model.position.z -= 3;
+        if (model != null) model.position.z += 1;
         break;
       case 40:
-        if (model != null) model.position.y -= 3;
+        if (model != null) model.position.y -= 1;
         break;
     }
   };
@@ -200,16 +174,16 @@ function setupKeyControls(cube: any) {
   assetLoader.load(airCraft.href, function(gltf){
     model = gltf.scene.children[0]; 
     sphere.add(model);
-    model.position.set(0 , 100, orbitAircraft);
+    model.position.set(0 , 25, orbitAircraft);
     model.scale.set(0.1,0.1,0.1);
     model.rotateY(-Math.PI/2);
   }, undefined, function(error){
     console.error(error);
   });
-  camera.position.set(0,100,orbitAircraft+orbitRadius);
+  camera.position.set(-250,40,orbitAircraft);
 
   //All settings before animation loop
-  setupKeyControls(player);
+  setupKeyControls(model);
 
   //ANIMATION LOOOOP
   renderer.setAnimationLoop(() => {
@@ -234,9 +208,8 @@ function setupKeyControls(cube: any) {
     sphere.rotateY(0.004);
     sphere2.rotateY(0.001);
     sphere.add(camera);
-    camera.lookAt(sphere.position);
-  
-    
+    camera.lookAt(sphere.position.x , sphere.position.y, sphere.position.z);
+    camera.rotation.y = -1.7;
     stats.update();
   });
 })();
