@@ -15,6 +15,8 @@ const airCraft = new URL("../img/aircraft.glb", import.meta.url);
 
 const scene = new THREE.Scene();
 
+const euler = new THREE.Euler(Math.PI / 180 * 45, 0, 0)
+
 let objLoader = new THREE.ObjectLoader();
 //objLoader.setPath(assetsPath);
 objLoader.load(ship, function(object){
@@ -106,20 +108,7 @@ const player = new THREE.Mesh(geometry2, material);
 const asteroid = new THREE.Mesh(geometry3, material);
 const asteroid2 = new THREE.Mesh(geometry3, material);
 
-const assetLoader = new GLTFLoader();
-assetLoader.load(airCraft.href, function(gltf){
-  model = gltf.scene.children[0];
-  
-  scene.add(model);
-  model.position.set(0 , 100, -100);
-  model.scale.set(0.2,0.2,0.2);
-  //rotate object???
-  //model.rotation.x = Math.PI / 4;
-  //model.rotation.y = Math.PI / 8;
-  //model.rotation.z = Math.PI / 2;
-}, undefined, function(error){
-  console.error(error);
-});
+
 
 const gui = new GUI()
 const playerFolder = gui.addFolder('Player')
@@ -144,6 +133,7 @@ scene.add(asteroid2);
 
 var orbitRadius = 200; // for example
 const orbitAsteroids = 210;
+const orbitAircraft = 500;
 
 
 let date, dateAsteroid, dateAsteroid2;
@@ -185,8 +175,20 @@ function setupKeyControls(cube: any) {
       map: textureForSun.map
     }),
   );
+  sphere.scale.set(1.5,1.5,1.5);
   sphere.receiveShadow = true;
   scene.add(sphere);
+
+  const assetLoader = new GLTFLoader();
+  assetLoader.load(airCraft.href, function(gltf){
+    model = gltf.scene.children[0]; 
+    sphere.add(model);
+    model.position.set(0 , 100, orbitAircraft);
+    model.scale.set(0.1,0.1,0.1);
+  }, undefined, function(error){
+    console.error(error);
+  });
+
 
   //All settings before animation loop
   setupKeyControls(player);
@@ -211,7 +213,7 @@ function setupKeyControls(cube: any) {
       Math.sin(dateAsteroid2) * orbitRadius
     );
 
-    sphere.rotation.y += 0.01;
+    sphere.rotateY(0.004);
 
     stats.update();
   });
