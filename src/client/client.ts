@@ -11,6 +11,7 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 const sunTexture = require("../img/8k_sun.jpg");
 const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
 const airCraft = new URL("../img/aircraft.glb", import.meta.url);
+const asteroidModelUrl = new URL("../img/Hyperion_1_1000.glb", import.meta.url);
 
 const scene = new THREE.Scene();
 
@@ -97,6 +98,7 @@ const material = new THREE.MeshBasicMaterial({
 });
 
 let model: /*unresolved*/ any;
+let asteroids:any = [];
 const asteroid = new THREE.Mesh(geometry3, material);
 const asteroid2 = new THREE.Mesh(geometry3, material);
 
@@ -171,6 +173,15 @@ function setupKeyControls(cube: any) {
   scene.add(sphere2);
 
   const assetLoader = new GLTFLoader();
+  assetLoader.load(asteroidModelUrl.href, function(gltf){
+    asteroids[0] = gltf.scene.children[0];
+    asteroids[0].scale.set(0.05,0.05,0.05);
+    asteroids[0].position.set(0 , 100, orbitAircraft);
+    scene.add(asteroids[0]);
+  }, undefined, function(error){
+    console.error(error);
+  })
+
   assetLoader.load(airCraft.href, function(gltf){
     model = gltf.scene.children[0]; 
     sphere.add(model);
