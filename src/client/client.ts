@@ -10,21 +10,12 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 
 const sunTexture = require("../img/8k_sun.jpg");
 const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
-const ship = require("../img/space_ship.obj");
 const airCraft = new URL("../img/aircraft.glb", import.meta.url);
+const asteroidModelUrl = new URL("../img/Hyperion_1_1000.glb", import.meta.url);
 
 const scene = new THREE.Scene();
 
 const euler = new THREE.Euler(Math.PI / 180 * 45, 0, 0)
-
-let objLoader = new THREE.ObjectLoader();
-//objLoader.setPath(assetsPath);
-objLoader.load(ship, function(object){
-  console.log("Inside object Loader");
-  object.position.y -= 100;
-  scene.add(object);
-});
-
 
 //grid helper
 // const size = 10000;
@@ -110,6 +101,8 @@ const material = new THREE.MeshBasicMaterial({
 });
 
 let model: /*unresolved*/ any;
+let a:any,a2:any,a3:any;
+
 const cube = new THREE.Mesh(geometry, material);
 const player = new THREE.Mesh(geometry2, material);
 const asteroid = new THREE.Mesh(geometry3, material);
@@ -206,6 +199,34 @@ function setupKeyControls(cube: any) {
   }, undefined, function(error){
     console.error(error);
   });
+
+  assetLoader.load(asteroidModelUrl.href, function(gltf){
+    a = gltf.scene.children[0];
+    a.scale.set(0.05,0.05,0.05);
+    a.position.set(0 , 100, orbitAircraft);
+    scene.add(a);
+  }, undefined, function(error){
+    console.error(error);
+  })
+
+  // assetLoader.load(asteroidModelUrl.href, function(gltf){
+  //   a2 = gltf.scene.children[0];
+  //   a2.scale.set(0.05,0.05,0.05);
+  //   a2.position.set(0 , 100, orbitAircraft);
+  //   scene.add(a2);
+  // }, undefined, function(error){
+  //   console.error(error);
+  // })
+
+  // assetLoader.load(asteroidModelUrl.href, function(gltf){
+  //   a3 = gltf.scene.children[0];
+  //   a3.scale.set(0.05,0.05,0.05);
+  //   a3.position.set(0 , 100, orbitAircraft);
+  //   scene.add(a3);
+  // }, undefined, function(error){
+  //   console.error(error);
+  // })
+
   camera.position.set(0,100,orbitAircraft+orbitRadius);
 
   //All settings before animation loop
@@ -219,17 +240,24 @@ function setupKeyControls(cube: any) {
     dateAsteroid = Date.now() * 0.002;
     dateAsteroid2 = (Date.now() + 1000) * 0.002;
 
-    asteroid.position.set(
-      Math.cos(dateAsteroid) * orbitAsteroids,
-      5,
-      Math.sin(dateAsteroid) * orbitRadius
-    );
+    // a2.position.set(
+    //   Math.cos(dateAsteroid) * orbitAsteroids,
+    //   5,
+    //   Math.sin(dateAsteroid) * orbitRadius
+    // );
 
-    asteroid2.position.set(
+    // a3.position.set(
+    //   Math.cos(dateAsteroid) * orbitAsteroids,
+    //   5,
+    //   Math.sin(dateAsteroid) * orbitRadius
+    // );
+
+    a.position.set(
       Math.cos(dateAsteroid2) * orbitAsteroids,
       5,
       Math.sin(dateAsteroid2) * orbitRadius
     );
+    
     
     sphere.rotateY(0.004);
     sphere2.rotateY(0.001);
