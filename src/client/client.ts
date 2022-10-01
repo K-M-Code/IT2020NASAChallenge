@@ -40,7 +40,7 @@ const viewSize = 900;
 const aspectRatio = window.innerWidth / window.innerHeight;
 
 //camera settings
-const camera = new THREE.OrthographicCamera(
+/*const camera = new THREE.OrthographicCamera(
   (-aspectRatio * viewSize) / 2,
   (aspectRatio * viewSize) / 2,
   viewSize / 2,
@@ -49,6 +49,13 @@ const camera = new THREE.OrthographicCamera(
   1000
 );
 camera.position.set(10, 5, 10);
+*/
+
+const fov = 45;
+const aspect = 2;  // the canvas default
+const near = 0.1;
+const far = 1000;
+const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
 //is window is resized
 window.addEventListener('resize', onWindowResize, false)
@@ -133,7 +140,7 @@ scene.add(asteroid2);
 
 var orbitRadius = 200; // for example
 const orbitAsteroids = 210;
-const orbitAircraft = 100;
+const orbitAircraft = 150;
 
 
 let date, dateAsteroid, dateAsteroid2;
@@ -175,9 +182,19 @@ function setupKeyControls(cube: any) {
       map: textureForSun.map
     }),
   );
-  sphere.scale.set(1.5,1.5,1.5);
+  sphere.scale.set(1,1,1);
   sphere.receiveShadow = true;
   scene.add(sphere);
+
+  let sphere2 = new Mesh(
+    new SphereGeometry(100,700,700),
+    new MeshPhysicalMaterial({
+      map: textureForSun.map
+    }),
+  );
+  sphere2.scale.set(1.5,1.5,1.5);
+  sphere2.receiveShadow = true;
+  scene.add(sphere2);
 
   const assetLoader = new GLTFLoader();
   assetLoader.load(airCraft.href, function(gltf){
@@ -189,7 +206,7 @@ function setupKeyControls(cube: any) {
   }, undefined, function(error){
     console.error(error);
   });
-
+  camera.position.set(0,100,orbitAircraft+orbitRadius);
 
   //All settings before animation loop
   setupKeyControls(player);
@@ -213,9 +230,13 @@ function setupKeyControls(cube: any) {
       5,
       Math.sin(dateAsteroid2) * orbitRadius
     );
-
+    
     sphere.rotateY(0.004);
-
+    sphere2.rotateY(0.001);
+    sphere.add(camera);
+    camera.lookAt(sphere.position);
+  
+    
     stats.update();
   });
 })();
