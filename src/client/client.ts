@@ -133,7 +133,7 @@ scene.add(asteroid2);
 
 var orbitRadius = 200; // for example
 const orbitAsteroids = 210;
-const orbitAircraft = 500;
+const orbitAircraft = 100;
 
 
 let date, dateAsteroid, dateAsteroid2;
@@ -185,6 +185,7 @@ function setupKeyControls(cube: any) {
     sphere.add(model);
     model.position.set(0 , 100, orbitAircraft);
     model.scale.set(0.1,0.1,0.1);
+    model.rotateY(-Math.PI/2);
   }, undefined, function(error){
     console.error(error);
   });
