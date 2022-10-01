@@ -108,10 +108,11 @@ const asteroid2 = new THREE.Mesh(geometry3, material);
 
 const assetLoader = new GLTFLoader();
 assetLoader.load(airCraft.href, function(gltf){
-  model = gltf.scene;
+  model = gltf.scene.children[0];
+  
   scene.add(model);
-  model.position.set(200,100,-700);
-  model.scale.set(2,2,2);
+  model.position.set(0 , 100, -100);
+  model.scale.set(0.2,0.2,0.2);
   //rotate object???
   //model.rotation.x = Math.PI / 4;
   //model.rotation.y = Math.PI / 8;
