@@ -71,10 +71,10 @@ export class SpaceShip {
     }
 
     keyPressHandler(){
-        let margin = -30;
+        let margin = -15;
         for (const [index, value] of this.health.entries()) {
             value.position.set(this.model.position.x, this.model.position.y-15,this.model.position.z + margin);
-            margin +=7;
+            margin +=3;
         }
        
         
@@ -99,5 +99,17 @@ export class SpaceShip {
 
     getModel() {
         return this.model;
+    }
+
+    getLastHP = ():THREE.Object3D =>{
+        let size:number = this.health.size;
+        for (const [index, value] of this.health.entries()) {
+           if(index.id == size-1)
+           return value;
+        }
+        return new THREE.Object3D;
+    }
+    getHealth(){
+        return this.health;
     }
 }

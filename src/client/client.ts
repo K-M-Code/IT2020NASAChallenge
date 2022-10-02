@@ -12,7 +12,7 @@ const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
 const asteroidModelUrl = new URL("../img/Hyperion_1_1000.glb", import.meta.url);
 const airCraft = new URL("../img/aircraft.glb", import.meta.url);
 
-const n = 100;
+const n = 500;
 const asteroidMax = 12;
 const asteroidMin = 1;
 
@@ -160,8 +160,18 @@ const orbitAircraft = 250;
   camera.position.set(-250,40,orbitAircraft);
 
   let count = 1;
-  renderer.setAnimationLoop(() => {
 
+  // let dateNow:number = new Date().getSeconds();
+
+
+  renderer.setAnimationLoop(() => {
+    // let dateGame:number = new Date().getSeconds();
+    // console.log(dateGame);
+    // if((dateGame - dateNow) > 3){
+    //   dateNow = dateGame;
+    //   console.log("DELETING");
+    //   newSpaseShip.getHealth().delete(newSpaseShip.getLastHP());
+    // }
     newSpaseShip.keyPressHandler();
     
     renderer.render(scene, camera);
