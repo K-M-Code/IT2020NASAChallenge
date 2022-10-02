@@ -7,6 +7,7 @@ import { GUI } from 'dat.gui';
 import { ACESFilmicToneMapping, Color, DirectionalLight, Mesh, MeshPhongMaterial, MeshPhysicalMaterial, PCFSoftShadowMap, SphereGeometry, sRGBEncoding, TextureLoader } from "three";
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {SpaceShip} from './space-ship';
+import {SolarWind} from './solar-wind';
 
 
 const sunTexture = require("../img/8k_sun.jpg");
@@ -19,12 +20,17 @@ const asteroidMax = 12;
 const asteroidMin = 1;
 
 
-//GONZALO! Here we init the space ship
-const newSpaseShip = new SpaceShip(airCraft);
-newSpaseShip.init();
+
 
 
 const scene = new THREE.Scene();
+//GONZALO! Here we init the space ship
+const newSpaseShip = new SpaceShip(airCraft,scene);
+newSpaseShip.init();
+
+const wind = new SolarWind(scene);
+
+
 scene.add(new THREE.AxesHelper(5))
 //grid helper
 // const size = 10000;
@@ -210,4 +216,3 @@ const orbitAircraft = 250;
 
   });
 })();
-
