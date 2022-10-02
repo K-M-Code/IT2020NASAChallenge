@@ -14,7 +14,7 @@ const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
 const asteroidModelUrl = new URL("../img/Hyperion_1_1000.glb", import.meta.url);
 const airCraft = new URL("../img/aircraft.glb", import.meta.url);
 
-const n = 1000;
+const n = 100;
 const asteroidMax = 12;
 const asteroidMin = 1;
 
