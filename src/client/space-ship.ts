@@ -27,11 +27,6 @@ export class SpaceShip {
         this.activeKeys = new Set();
         this.releasedKeys = new Set();
 
-        
-        // this.health.position.set(this.model.position.x, this.model.position.y,this.model.position.z);
-        //this.health.position.set(0,0,0);
-        
-
         document.onkeydown = (e) =>{
             this.activeKeys.add(e.keyCode); 
             this.releasedKeys.delete(e.keyCode);

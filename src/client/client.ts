@@ -1,7 +1,5 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import Stats from 'three/examples/jsm/libs/stats.module';
 import { GUI } from 'dat.gui';
 import { ACESFilmicToneMapping, Color, DirectionalLight, Mesh, MeshPhongMaterial, MeshPhysicalMaterial, PCFSoftShadowMap, SphereGeometry, sRGBEncoding, TextureLoader } from "three";
@@ -18,8 +16,29 @@ const n = 100;
 const asteroidMax = 12;
 const asteroidMin = 1;
 
-const scene = new THREE.Scene();
+//fetching API for solar wind
+fetch('https://api.auroras.live/v1/?type=ace&data=speed')
+  .then((response) => response.json())
+  .then((data) => representData(data));
 
+const info = window.document.getElementById("info");
+
+fetch('https://api.auroras.live/v1/?type=ace&data=kp')
+  .then((response) => response.json())
+  .then((data) => representData2(data));
+
+  const representData = (data:any) => {
+    if(info != null)
+    info.innerHTML = info.innerHTML + "Solar wind speed: " + data.speed + " km/s <br/>";
+  
+  }  
+  const representData2 = (data:any) => {
+    if(info != null)
+    info.innerHTML = info.innerHTML + "Index: " + data.kp + "<br/>";
+  
+  }  
+
+const scene = new THREE.Scene();
 const newSpaseShip = new SpaceShip(airCraft,scene);
 newSpaseShip.init();
 
@@ -83,15 +102,7 @@ cameraFolder.add(camera.position, "x", -1000, 1000);
 cameraFolder.add(camera.position, "y", -1000, 1000);
 cameraFolder.add(camera.position, "z", -1000, 1000);
 
-const spaceShipFolder = gui.addFolder("Ship");
-spaceShipFolder.add(newSpaseShip.getModel().position, "x");
-spaceShipFolder.add(newSpaseShip.getModel().position, "y");
-spaceShipFolder.add(newSpaseShip.getModel().position, "z");
-
-
-
 const orbitAircraft = 250;
-
 
 (async function () {
 
@@ -164,9 +175,7 @@ const orbitAircraft = 250;
     stats.update();
     wind.getModel().scale.set( wind.getModel().scale.x*count,wind.getModel().scale.y*count,wind.getModel().scale.z*count);
     count += 0.00003;
-    console.log(count)
     if(count > 1.02) {
-      console.log("HERE")
       count = 1;
       wind.getModel().scale.set(1,1,1);
     }

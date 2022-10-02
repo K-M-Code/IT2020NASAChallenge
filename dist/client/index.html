@@ -16,12 +16,39 @@
         width: 100vw;
         height: 100vh;
       }
+
+      #api-info{
+        z-index: 10;
+        position: absolute;
+        margin: auto;
+        color: white;
+      }
+      #info {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 100;
+        display:block;
+        color: white;
+        }
+        #info2 {
+        position: absolute;
+        top: 50px;
+        width: 100%;
+        text-align: center;
+        z-index: 100;
+        display:block;
+        color: white;
+        }
     </style>
   </head>
 
   <body>
+    <div id="info"></div> 
     
     <canvas id="c1" class="c"></canvas>
+   
     <script type="module" src="bundle.js"></script>
   </body>
 </html>
