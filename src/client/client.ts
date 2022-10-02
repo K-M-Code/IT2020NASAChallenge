@@ -9,7 +9,6 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import {SpaceShip} from './space-ship';
 import {SolarWind} from './solar-wind';
 
-
 const sunTexture = require("../img/8k_sun.jpg");
 const milkWayTexture = require("../img/8k_stars_milky_way.jpg");
 const asteroidModelUrl = new URL("../img/Hyperion_1_1000.glb", import.meta.url);
@@ -19,46 +18,22 @@ const n = 100;
 const asteroidMax = 12;
 const asteroidMin = 1;
 
-
-
-
-
 const scene = new THREE.Scene();
-//GONZALO! Here we init the space ship
+
 const newSpaseShip = new SpaceShip(airCraft,scene);
 newSpaseShip.init();
 
 const wind = new SolarWind(scene);
 
 
-scene.add(new THREE.AxesHelper(5))
-//grid helper
-// const size = 10000;
-// const divisions = 100;
-// const gridHelper = new THREE.GridHelper(size, divisions);
-// scene.add(gridHelper);
 
-//axis helper
-// const axesHelper = new THREE.AxesHelper(1000);
-// scene.add(axesHelper);
+scene.add(new THREE.AxesHelper(5))
 
 const viewSize = 900;
 const aspectRatio = window.innerWidth / window.innerHeight;
 
-//camera settings
-/*const camera = new THREE.OrthographicCamera(
-  (-aspectRatio * viewSize) / 2,
-  (aspectRatio * viewSize) / 2,
-  viewSize / 2,
-  -viewSize / 2,
-  -1000,
-  1000
-);
-camera.position.set(10, 5, 10);
-*/
-
 const fov = 45;
-const aspect = 2;  // the canvas default
+const aspect = 2;
 const near = 0.1;
 const far = 10000;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -100,8 +75,6 @@ controls.dampingFactor = 0.05;
 controls.enableDamping = true;
 
 
-let model: /*unresolved*/ any;
-//let a:any, a1 : any, a2 : any, a3 : any, a4: any, a5 : any;
 let asteroid : any = [];
 const gui = new GUI()
 
@@ -151,27 +124,6 @@ const orbitAircraft = 250;
 
   const assetLoader = new GLTFLoader();
   assetLoader.load(asteroidModelUrl.href, function(gltf){
-    /*a = gltf.scene.children[0];
-    a.scale.set(0.05,0.05,0.05);
-    a.position.set(0 , 90, orbitAircraft);
-    a1 = a.clone();
-    a1.position.set(200 , 30, orbitAircraft);
-    a2 = a.clone();
-    a2.position.set(700 , 200, orbitAircraft-50);
-    a3 = a.clone();
-    a3.position.set(1200 , 55, orbitAircraft);
-    a4 = a.clone();
-    a4.position.set(1300 , 25, orbitAircraft);
-    a5 = a.clone();
-    a5.position.set(1400 , 35, orbitAircraft);
-
-    scene.add(a, a1, a2 , a3, a4, a5);
-    a.rotation.x += 1;
-    a1.rotation.x +=1.5;
-    a2.rotation.x +=.5;
-    a3.rotation.x +=1.9;
-    a4.rotation.x +=1.1;
-    a5.rotation.x +=1.2;*/
     let a =  gltf.scene.children[0];
     a.scale.set(0.05,0.05,0.05);
     for( let i = 0; i<n ; i++){
@@ -196,9 +148,7 @@ const orbitAircraft = 250;
 
   camera.position.set(-250,40,orbitAircraft);
 
-  //All settings before animation loop
-
-  //ANIMATION LOOOOP
+  let count = 1;
   renderer.setAnimationLoop(() => {
 
     newSpaseShip.keyPressHandler();
@@ -212,7 +162,13 @@ const orbitAircraft = 250;
     camera.lookAt(sphere.position.x , sphere.position.y, sphere.position.z);
     camera.rotation.y = -1.7;
     stats.update();
-
-
+    wind.getModel().scale.set( wind.getModel().scale.x*count,wind.getModel().scale.y*count,wind.getModel().scale.z*count);
+    count += 0.00003;
+    console.log(count)
+    if(count > 1.02) {
+      console.log("HERE")
+      count = 1;
+      wind.getModel().scale.set(1,1,1);
+    }
   });
 })();

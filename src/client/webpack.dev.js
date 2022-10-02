@@ -23,7 +23,7 @@ module.exports = merge(common, {
      },
      { test: /\.obj$/,
       loader: 'url-loader',
-  },
+    },
     ]
   }
 });

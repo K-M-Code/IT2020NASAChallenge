@@ -50,7 +50,7 @@ export class SpaceShip {
         this.model.rotateY(-Math.PI/2);
     }
 
-    init(){
+   init(){
         const assetLoader = new GLTFLoader();
         assetLoader.load(this.modelUrl.href, (gltf) => {
             this.modelLoader(gltf);
