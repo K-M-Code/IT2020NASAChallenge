@@ -7,12 +7,12 @@
 
 **Our Team**: We are 6, 3rd year IT students from different parts of the world studying in the IT2020 Batch of Vaasa University of Applied Sciences in the B.Eng IT stream.
 
-Kunal Menon - Project Manager
-Mykola Zhabko - Software Team
-Gonzalo Araya - Software Team
-Bogdan Rudnevskii - Hardware / Software Team
-Sergiu Petrut - Hardware Team
-Ali Aldulaimi - Hardware Team
+Kunal Menon - Project Manager  
+Mykola Zhabko - Software Team  
+Gonzalo Araya - Software Team  
+Bogdan Rudnevskii - Hardware / Software Team  
+Sergiu Petrut - Hardware Team  
+Ali Aldulaimi - Hardware Team  
 
 We thought of creating various approaches with regard to this challenge. Our hardware team decided to work on Smart Home integration. Our software team worked on an interactive game. Our project manager worked on creating a website where we could put up some information with regard to the impact of solar storms on a common man.
 
