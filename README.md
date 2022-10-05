@@ -1,9 +1,9 @@
 # IT2020NASAChallenge
 2022 NASA Space Apps Challenge - GO VAMK'd!
 
-The Files for the Project can be seen inside the branches which were used to track project progress, like
-https://github.com/K-M-Code/IT2020NASAChallenge/tree/aircraft-basic-version-2 - for 3D Game
-https://github.com/K-M-Code/IT2020NASAChallenge/tree/smart-home-integration - for Smart Home Integration
+The Files for the Project can be seen inside the branches which were used to track project progress, like  
+https://github.com/K-M-Code/IT2020NASAChallenge/tree/aircraft-basic-version-2 - for 3D Game  
+https://github.com/K-M-Code/IT2020NASAChallenge/tree/smart-home-integration - for Smart Home Integration    
 
 
 
