@@ -24,7 +24,7 @@ We thought of creating various approaches with regard to this challenge. Our har
 
 ***Information Website*** - The aim was to create an information website which provides information in a simple format for people to understand how solar storms can impact them and how it could affect their day-to-day life and how they can be better prepared. Sadly there aren't many websites which educate people on this issue, especially the risks and actions to take incase of emergencies.
 
-**Tools/Tech Used**: VScode, HTML5/CSS3, Typescript, Photoshop.
+**Tools/Tech Used**: VScode, HTML5/CSS3, JavaScript, Photoshop.
 
 
 ***Smart Home Integration*** - Our goal was to create a smart home integrated solution where we could receive notifications on google nest hub or such smart devices to alert people with regards to approaching solar storms. We also planned to have the solution integrated with other smart devices around the home like having the light's colour/brightness change based on the intensity of the approaching geomagnetic storm. Also, advice people via the Nest Hub or similar device to take precautions, in case there is a severe storm upcoming. The data for the integration was pulled from NASA's DONKI API and also from api.auroras.live.
@@ -34,4 +34,4 @@ We thought of creating various approaches with regard to this challenge. Our har
 
 ***Interactive 3D Game*** - We planned to create a game depicting a spaceship flying near the sun through some asteroids. The health of the spaceship would be impacted by the intensity of the solar radiation and the ship would drift due to the speed of the solar winds. We also got ideas to develop it further for use in a VR environment but didn't seem possible in the timeframe.
 
-**Tools/Tech Used**: VScode, Git, Webpack, Blender, Three.js, NASA DONKI API.
+**Tools/Tech Used**: VScode, TypeScript, Git, Webpack, Blender, Three.js, NASA DONKI API.
